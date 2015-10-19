@@ -3,25 +3,31 @@ package csv
 import (
        gocsv "encoding/csv"
        "os"
-       "io"
-       "flag"
-       "fmt"
 )
 
 type DictReader struct {
-     Reader *csv.Reader
+     Reader *gocsv.Reader
      Fieldnames []string
 }
 
-func NewDictReader(path string) *DictReader {
+func NewDictReader(path string) (*DictReader, error) {
      
-	body, _ := os.Open(path)
+	body, open_err := os.Open(path)
+
+	if open_err != nil {
+	      return nil, open_err
+	}
+
 	reader := gocsv.NewReader(body)
 
-	row, _ := reader.Read()
+	row, read_err := reader.Read()
+
+	if read_err != nil {
+	   return nil, read_err
+	}
 
 	dr := DictReader{Reader: reader, Fieldnames: row}
-	return &dr
+	return &dr, nil
 }
 
 func (dr DictReader) Read() (map[string]string, error) {
