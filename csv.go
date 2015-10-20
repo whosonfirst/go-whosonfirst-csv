@@ -1,21 +1,21 @@
 package csv
 
 import (
-       gocsv "encoding/csv"
-       "os"
+	gocsv "encoding/csv"
+	"os"
 )
 
 type DictReader struct {
-     Reader *gocsv.Reader
-     Fieldnames []string
+	Reader     *gocsv.Reader
+	Fieldnames []string
 }
 
 func NewDictReader(path string) (*DictReader, error) {
-     
+
 	body, open_err := os.Open(path)
 
 	if open_err != nil {
-	      return nil, open_err
+		return nil, open_err
 	}
 
 	reader := gocsv.NewReader(body)
@@ -23,7 +23,7 @@ func NewDictReader(path string) (*DictReader, error) {
 	row, read_err := reader.Read()
 
 	if read_err != nil {
-	   return nil, read_err
+		return nil, read_err
 	}
 
 	dr := DictReader{Reader: reader, Fieldnames: row}
@@ -32,18 +32,18 @@ func NewDictReader(path string) (*DictReader, error) {
 
 func (dr DictReader) Read() (map[string]string, error) {
 
-     row, err := dr.Reader.Read()
+	row, err := dr.Reader.Read()
 
-     if err != nil {
-     	return nil, err
-     }
+	if err != nil {
+		return nil, err
+	}
 
-     dict := make(map[string]string)
-     
-     for i, value := range row {
-     	 key := dr.Fieldnames[i]
-	 dict[key] = value
-     }
+	dict := make(map[string]string)
 
-     return dict, nil
+	for i, value := range row {
+		key := dr.Fieldnames[i]
+		dict[key] = value
+	}
+
+	return dict, nil
 }
