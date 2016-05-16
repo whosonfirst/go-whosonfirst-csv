@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"fmt"
+	_ "fmt"
 	"github.com/whosonfirst/go-whosonfirst-csv"
 	"io"
 	"os"
@@ -12,17 +12,43 @@ import (
 
 func main() {
 
-	var str_cols = flag.String("columns", "", "Columns to filter on")
+	var str_cols = flag.String("columns", "-", "Columns to filter on")
 
 	flag.Parse()
+	files := flag.Args()
 
-	cols := strings.Split(*str_cols, ",")
+	// see also: https://github.com/whosonfirst/go-whosonfirst-csv/issues/2
+
+	cols := make([]string, 0)
+
+	if *str_cols == "-" {
+
+		tmp := make(map[string]int)
+
+		for _, path := range files {
+
+			reader, err := csv.NewDictReader(path)
+
+			if err != nil {
+				continue
+			}
+
+			for _, k := range reader.Fieldnames {
+				tmp[k] = 1
+			}
+		}
+
+		for k, _ := range tmp {
+			cols = append(cols, k)
+		}
+	} else {
+
+		cols = strings.Split(*str_cols, ",")
+	}
 
 	if len(cols) == 0 {
 		panic("NO COLUMNS")
 	}
-
-	files := flag.Args()
 
 	writer, err := csv.NewDictWriter(os.Stdout, cols)
 
@@ -46,7 +72,6 @@ func main() {
 			reader, err := csv.NewDictReader(path)
 
 			if err != nil {
-				fmt.Println(path, err)
 				return
 			}
 
