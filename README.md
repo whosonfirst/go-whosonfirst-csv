@@ -71,6 +71,12 @@ row := make(map[string]string)
 row["foo"] = "hello"
 row["bar"] = "world"
 
+// See this? "baz" is not included in the list of fieldnames
+// above so it will be silently ignored and excluded from your
+// CSV file. Perhaps it should trigger an error. It doesn't, today...
+
+row["baz"] = "wub wub wub"
+
 writer.WriteRow(row)
 ```
 
