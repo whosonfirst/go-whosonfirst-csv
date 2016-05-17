@@ -20,7 +20,7 @@ import (
 	"os"
 )
 
-reader, reader_err := csv.NewDictReaderFromFile(csv_file)
+reader, reader_err := csv.NewDictReaderFromPath("example.csv")
 
 // or maybe you might do
 // reader, err := csv.NewDictReader(os.Stdin)
