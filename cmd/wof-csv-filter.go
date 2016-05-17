@@ -2,18 +2,30 @@ package main
 
 import (
 	"flag"
-	_ "fmt"
+	"fmt"
 	"github.com/whosonfirst/go-whosonfirst-csv"
 	"io"
 	"os"
+	"path/filepath"
 	"strings"
 	"sync"
 )
 
 func main() {
 
-	var str_cols = flag.String("columns", "-", "Columns to filter on")
-	var out = flag.String("out", "-", "Where to file the data")
+	var str_cols = flag.String("columns", "-", "Columns to filter on. A value of \"-\" means the set of unique columns for all CSV files being filtered.")
+	var out = flag.String("out", "-", "Where to write the data. A value of \"-\" means write the data to STDOUT.")
+
+	flag.Usage = func() {
+		whoami := os.Args[0]
+		fname := filepath.Base(whoami)
+
+		fmt.Fprintf(os.Stderr, "Usage of %s:\n", fname)
+		fmt.Printf("  $> %s -options <files>\n\n", fname)
+
+		fmt.Printf("Valid options are:\n")
+		flag.PrintDefaults()
+	}
 
 	flag.Parse()
 	files := flag.Args()

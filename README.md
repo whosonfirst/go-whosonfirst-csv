@@ -76,7 +76,21 @@ writer.WriteRow(row)
 
 ## Tools
 
-### 
+### wof-csv-filter
+
+Concatenate one or more CSV files ensuring a common set of columns.
+
+```
+./bin/wof-csv-filter -h
+Usage of wof-csv-filter:
+  $> wof-csv-filter -options <files>
+
+Valid options are:
+  -columns string
+    	   Columns to filter on. A value of "-" means the set of unique columns for all CSV files being filtered. (default "-")
+  -out string
+       Where to write the data. A value of "-" means write the data to STDOUT. (default "-")
+```
 
 ## See also
 
