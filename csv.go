@@ -20,15 +20,9 @@ type DictWriter struct {
 // https://golang.org/pkg/encoding/csv/#NewReader
 // (20160516/thisisaaronland)
 
-func NewDictReader(path string) (*DictReader, error) {
+func NewDictReader(fh io.Reader) (*DictReader, error) {
 
-	body, open_err := os.Open(path)
-
-	if open_err != nil {
-		return nil, open_err
-	}
-
-	reader := gocsv.NewReader(body)
+	reader := gocsv.NewReader(fh)
 
 	row, read_err := reader.Read()
 
@@ -38,6 +32,17 @@ func NewDictReader(path string) (*DictReader, error) {
 
 	dr := DictReader{Reader: reader, Fieldnames: row}
 	return &dr, nil
+}
+
+func NewDictReaderFromPath(path string) (*DictReader, error) {
+
+	fh, err := os.Open(path)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return NewDictReader(fh)
 }
 
 func (dr DictReader) Read() (map[string]string, error) {
@@ -64,6 +69,17 @@ func NewDictWriter(fh io.Writer, fieldnames []string) (*DictWriter, error) {
 
 	dw := DictWriter{Writer: writer, Fieldnames: fieldnames}
 	return &dw, nil
+}
+
+func NewDictWriterFromPath(path string, fieldnames []string) (*DictWriter, error) {
+
+     fh, err := os.OpenFile(path, os.O_RDWR, 0644)
+
+     if err != nil {
+     	return nil, err
+     }
+
+     return NewDictWriter(fh, fieldnames)
 }
 
 func (dw DictWriter) WriteHeader() {

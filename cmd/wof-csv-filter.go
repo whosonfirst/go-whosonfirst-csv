@@ -13,6 +13,7 @@ import (
 func main() {
 
 	var str_cols = flag.String("columns", "-", "Columns to filter on")
+	var out = flag.String("out", "-", "Where to file the data")
 
 	flag.Parse()
 	files := flag.Args()
@@ -27,7 +28,7 @@ func main() {
 
 		for _, path := range files {
 
-			reader, err := csv.NewDictReader(path)
+			reader, err := csv.NewDictReaderFromPath(path)
 
 			if err != nil {
 				continue
@@ -50,10 +51,27 @@ func main() {
 		panic("NO COLUMNS")
 	}
 
-	writer, err := csv.NewDictWriter(os.Stdout, cols)
+	var writer *csv.DictWriter
 
-	if err != nil {
-		panic(err)
+	if *out == "-" {
+
+		w, err := csv.NewDictWriter(os.Stdout, cols)
+
+		if err != nil {
+			panic(err)
+		}
+
+		writer = w
+
+	} else {
+
+		w, err := csv.NewDictWriterFromPath(*out, cols)
+
+		if err != nil {
+			panic(err)
+		}
+
+		writer = w
 	}
 
 	writer.WriteHeader()
@@ -69,7 +87,7 @@ func main() {
 
 			defer wg.Done()
 
-			reader, err := csv.NewDictReader(path)
+			reader, err := csv.NewDictReaderFromPath(path)
 
 			if err != nil {
 				return
