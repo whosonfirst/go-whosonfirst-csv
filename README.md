@@ -11,7 +11,7 @@ import (
 	csv "github.com/whosonfirst/go-whosonfirst-csv"
 )
 
-reader, reader_err := csv.NewDictReader(csv_file)
+reader, reader_err := csv.NewDictReaderFromFile(csv_file)
 
 if reader_err != nil {
 	return reader_err
