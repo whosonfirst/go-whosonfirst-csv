@@ -16,10 +16,6 @@ type DictWriter struct {
 	Fieldnames []string
 }
 
-// to do: update to take io.Reader and not a string
-// https://golang.org/pkg/encoding/csv/#NewReader
-// (20160516/thisisaaronland)
-
 func NewDictReader(fh io.Reader) (*DictReader, error) {
 
 	reader := gocsv.NewReader(fh)
