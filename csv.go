@@ -73,7 +73,7 @@ func NewDictWriter(fh io.Writer, fieldnames []string) (*DictWriter, error) {
 
 func NewDictWriterFromPath(path string, fieldnames []string) (*DictWriter, error) {
 
-     fh, err := os.OpenFile(path, os.O_RDWR, 0644)
+     fh, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 
      if err != nil {
      	return nil, err
