@@ -2,13 +2,9 @@
 
 A simple Go package to implement a "dict reader" style CSV parser (on top of the default `encoding/csv` package) to return rows a key-value dictionaries rather than lists.
 
-## Install
+## Important
 
-You will need to have both `Go` (specifically [version 1.12](https://golang.org/dl/) or higher because we're using [Go modules](https://github.com/golang/go/wiki/Modules)) and the `make` programs installed on your computer. Assuming you do just type:
-
-```
-make tools
-```
+This package has been archived and is no longer maintained. You should use [sfomuseum/go-csvdict](https://github.com/sfomuseum/go-csvdict) instead.
 
 ## Usage
 
